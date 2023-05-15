@@ -284,7 +284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 1
   mode:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 3
   meteringMode:
     m_OverrideState: 0

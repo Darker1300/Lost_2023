@@ -676,7 +676,7 @@ Material:
     - _CamouflageDistortionScale: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _CamouflageNoiseScaleA: {r: 0.25, g: 0.25, b: 0, a: 0}
     - _CamouflageNoiseScaleB: {r: 0.25, g: 0.25, b: 0, a: 0}
-    - _Color: {r: 0.13615376, g: 0.13384604, b: 0.14999992, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _ColorReplaceColor: {r: 1, g: 0, b: 0, a: 0}
     - _ColorReplaceTargetColor: {r: 0, g: 0, b: 0, a: 0}
     - _CustomFadeNoiseScale: {r: 1, g: 1, b: 0, a: 0}
@@ -778,6 +778,6 @@ Material:
     - _UVScrollSpeed: {r: 0.2, g: 0, b: 0, a: 0}
     - _UberNoiseScale: {r: 0.2, g: 0.2, b: 0, a: 0}
     - _UberPosition: {r: 0, g: 0, b: 0, a: 0}
-    - _UnlitColor: {r: 0.13615379, g: 0.13384607, b: 0.14999995, a: 1}
+    - _UnlitColor: {r: 0, g: 0, b: 0, a: 1}
     - _UnlitColorMap_MipInfo: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
