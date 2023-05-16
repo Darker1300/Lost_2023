@@ -7,9 +7,18 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
 
+    [SerializeField]
+    private Transform body;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+
+        body.localRotation = Quaternion.identity;
     }
 
     private void FixedUpdate()
@@ -20,12 +29,15 @@ public class PlayerController : MonoBehaviour
         Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0f).normalized;
         rb.velocity = movement * speed;
 
-        // if (movement.magnitude > 0.1f)
-        // {
-        //     float targetAngle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
-        //     Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
-        //     transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        // }
+        if (movement.magnitude > .1f)
+        {
+            float targetAngle = (Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg) + 90f;
+            Debug.Log("Movement - X: " + movement.x + ", Y: " + movement.y + ", Z: " + movement.z);
+            Debug.Log("Target Angle: " + targetAngle);
+
+            Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+            body.localRotation = Quaternion.Lerp(body.localRotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
