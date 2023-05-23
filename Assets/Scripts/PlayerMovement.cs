@@ -10,6 +10,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Transform body;
 
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -17,7 +21,6 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-
         body.localRotation = Quaternion.identity;
     }
 
@@ -27,16 +30,19 @@ public class PlayerController : MonoBehaviour
         float moveVertical = Input.GetAxis("Vertical");
 
         Vector3 movement = new Vector3(moveHorizontal, moveVertical, 0f).normalized;
+        // rb.velocity = movement * speed;
         rb.velocity = movement * speed;
 
         if (movement.magnitude > .1f)
         {
-            float targetAngle = (Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg) + 90f;
-            Debug.Log("Movement - X: " + movement.x + ", Y: " + movement.y + ", Z: " + movement.z);
-            Debug.Log("Target Angle: " + targetAngle);
+            float targetAngle = (Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg);
+            Quaternion targetRotation = Quaternion.Euler(0f, -targetAngle, 0f);
 
-            Quaternion targetRotation = Quaternion.Euler(0f, targetAngle, 0f);
+            // Rotate the body
             body.localRotation = Quaternion.Lerp(body.localRotation, targetRotation, rotationSpeed * Time.deltaTime);
+            // Flip the sprite's Y axis if there is change in horizontal movement
+            spriteRenderer.flipY = moveHorizontal < 0f;
+        
         }
     }
 
@@ -44,4 +50,5 @@ public class PlayerController : MonoBehaviour
     {
         rb.velocity = Vector3.zero;
     }
+
 }
