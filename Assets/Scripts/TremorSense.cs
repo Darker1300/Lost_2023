@@ -8,6 +8,9 @@ public class TremorSense : MonoBehaviour
 
     private Dictionary<Collider, Coroutine> detectedEntities = new Dictionary<Collider, Coroutine>();
 
+    [SerializeField]
+    private SwitchMode stealthCheck; 
+
     void Start()
     {
         // Ensure the attached GameObject has a SphereCollider
@@ -24,6 +27,8 @@ public class TremorSense : MonoBehaviour
             Debug.LogWarning("Setting SphereCollider as trigger for TremorSense.");
             sphereCollider.isTrigger = true;
         }
+
+        stealthCheck.GetComponent<SwitchMode>();
     }
 
     void OnTriggerEnter(Collider other)
