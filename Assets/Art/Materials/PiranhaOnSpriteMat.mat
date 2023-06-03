@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DefaultSpriteLit
+  m_Name: PiranhaOnSpriteMat
   m_Shader: {fileID: -6465566751694194690, guid: 5c143cd4cb4ad404a849c2a7f0325fe7,
     type: 3}
   m_Parent: {fileID: 0}
@@ -38,7 +38,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _EmissionTex:
-        m_Texture: {fileID: 2800000, guid: c5f9a912abf0d304da2cd6553f86bc66, type: 3}
+        m_Texture: {fileID: 2800000, guid: 593e4fb37caaa8c4abbd2d4080da9d6a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -72,8 +72,8 @@ Material:
     - _DoubleSidedGIMode: 0
     - _DoubleSidedNormalMode: 1
     - _DstBlend: 10
-    - _EmissionIntensity: 0
-    - _EmissionWeight: 1
+    - _EmissionIntensity: 1
+    - _EmissionWeight: 0
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
     - _OpaqueCullMode: 2
@@ -111,7 +111,7 @@ Material:
     m_Colors:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColour: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColour: {r: 6.4, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
 --- !u!114 &3957397286417420778
 MonoBehaviour:

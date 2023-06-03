@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DefaultSpriteLit
+  m_Name: PiranhaOffSpriteMat
   m_Shader: {fileID: -6465566751694194690, guid: 5c143cd4cb4ad404a849c2a7f0325fe7,
     type: 3}
   m_Parent: {fileID: 0}

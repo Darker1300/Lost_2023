@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering.HighDefinition;
 
 public class PlayerChargeShot : MonoBehaviour
 {
@@ -12,13 +12,17 @@ public class PlayerChargeShot : MonoBehaviour
     {
         public string name = "Light";
 
-        public void Start()
+        public void Initialise()
         {
             if (InitialiseMaxIntensity && light != null)
-                maxIntensity = light.intensity;
+            {
+                lightData = light.GetComponent<HDAdditionalLightData>();
+                maxIntensity = lightData.intensity;
+            }
         }
 
         public Light light = null;
+        [HideInInspector] public HDAdditionalLightData lightData;
         public float minIntensity = 0f;
         public float maxIntensity = 0f;
         public AnimationCurve intensityCurve
@@ -28,6 +32,9 @@ public class PlayerChargeShot : MonoBehaviour
 
         public float GetIntensity(float percent)
             => Mathf.Lerp(minIntensity, maxIntensity, intensityCurve.Evaluate(percent));
+
+        public void SetIntensity(float percent)
+            => lightData.SetIntensity(GetIntensity(percent), lightData.lightUnit);
     }
 
     [Serializable]
@@ -37,12 +44,12 @@ public class PlayerChargeShot : MonoBehaviour
 
         public ChargeEvent()
         {
-            history = Trigger.Below;
+            CurrentState = TriggerType.Below;
         }
 
-        public Trigger trigger = Trigger.Above;
+        public TriggerType Trigger = TriggerType.Above;
         public float Threshold = 0f;
-        public enum Trigger
+        public enum TriggerType
         {
             Above = 1,
             Both = 0,
@@ -51,31 +58,30 @@ public class PlayerChargeShot : MonoBehaviour
 
         public UnityEvent Event = new();
 
-        [HideInInspector]
-        public Trigger history = Trigger.Below;
+        [HideInInspector] public TriggerType CurrentState;
 
         public bool UpdateEvent(float chargeProgress)
         {
             // Above
-            if ((trigger == Trigger.Above || trigger == Trigger.Both)
-                && history == Trigger.Below
+            if ((Trigger == TriggerType.Above || Trigger == TriggerType.Both)
+                && CurrentState == TriggerType.Below
                 && chargeProgress >= Threshold)
             {
-                history = Trigger.Above;  // Update history
+                CurrentState = TriggerType.Above;  // Update history
                 return Invoke();
             }
 
             // Below
-            if ((trigger == Trigger.Below || trigger == Trigger.Both)
-                && history == Trigger.Above
+            if ((Trigger == TriggerType.Below || Trigger == TriggerType.Both)
+                && CurrentState == TriggerType.Above
                 && chargeProgress <= Threshold)
             {
-                history = Trigger.Below;  // Update history
+                CurrentState = TriggerType.Below;  // Update history
                 return Invoke();
             }
 
             // If no event was invoked, update history based on current chargeProgress
-            history = chargeProgress > Threshold ? Trigger.Above : Trigger.Below;
+            CurrentState = chargeProgress > Threshold ? TriggerType.Above : TriggerType.Below;
 
             return false;
         }
@@ -93,6 +99,8 @@ public class PlayerChargeShot : MonoBehaviour
     [SerializeField] private SpriteRenderer bodyRenderer = null;
     [SerializeField] private Material openMat = null;
     [SerializeField] private Material closeMat = null;
+
+    [SerializeField] private bool startOnAwake = true;
 
     [SerializeField] private float chargeTime = 1.5f;
     [SerializeField] private float passiveCooldownTime = .33f;
@@ -123,8 +131,11 @@ public class PlayerChargeShot : MonoBehaviour
     {
         animator = GetComponentInChildren<Animator>();
 
+
         foreach (LightEffect chargeLight in ChargeLights)
-            chargeLight.Start();
+            chargeLight.Initialise();
+
+        if (!startOnAwake) return;
 
         foreach (ChargeEvent chargeEvent in ChargeEvents)
             chargeEvent.UpdateEvent(chargeScaledPercent);
@@ -184,7 +195,7 @@ public class PlayerChargeShot : MonoBehaviour
         // effect set variable
         foreach (LightEffect chargeLight in ChargeLights)
             if (chargeLight.light)
-                chargeLight.light.intensity = chargeLight.GetIntensity(chargeScaledPercent);
+                chargeLight.SetIntensity(chargeScaledPercent);
     }
 
     void OnShoot()
@@ -217,7 +228,7 @@ public class PlayerChargeShot : MonoBehaviour
         {
             Material targetMat = state ? openMat : closeMat;
             const string emissionTexName = "_EmissionTex";
-            const string emissionColorName = "_EmissionColor";
+            const string emissionColorName = "_EmissionColour";
 
             bodyRenderer.material.SetTexture(emissionTexName,
                 targetMat.GetTexture(emissionTexName));
